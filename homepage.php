@@ -79,11 +79,11 @@
                         <label>Password</label>
                         <input type="password" placeholder="Create password">
                         
-                        <button class="btn-signup">Sign Up</button>
+                        <button type="submit" class="btn-signup-main">Sign Up</button>
+                        <button type="button" class="btn-social">Sign up with Google</button>
                     </form>
                 </div>
             </aside>
         </div>
     </main>
 </body>
-</html>
