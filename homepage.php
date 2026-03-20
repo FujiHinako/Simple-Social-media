@@ -79,8 +79,7 @@
                         <label>Password</label>
                         <input type="password" placeholder="Create password">
                         
-                        <button type="submit" class="btn-signup-main">Sign Up</button>
-                        <button type="button" class="btn-social">Sign up with Google</button>
+                        <button class="btn-signup">Sign Up</button>
                     </form>
                 </div>
             </aside>
