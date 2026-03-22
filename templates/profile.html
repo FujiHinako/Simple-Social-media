@@ -1,0 +1,142 @@
+<div>
+
+    <!-- Cover Photo -->
+    <div class="profile-cover" style="background-image: url('{COVER_PHOTO}');">
+        <div class="profile-header-overlay">
+            <img src="{PROFILE_PHOTO}" alt="{USER_FULL_NAME}" class="profile-photo">
+            <div class="profile-info">
+                <h1>{USER_FULL_NAME}</h1>
+                <p class="profile-bio">{USER_BIO}</p>
+                <p class="profile-email">{USER_EMAIL}</p>
+                {EDIT_BUTTON}
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Gallery -->
+    <section class="photo-gallery">
+        <h2>Photos</h2>
+        <div class="gallery-grid">
+{GALLERY_HTML}
+        </div>
+    </section>
+
+    <!-- User Posts Feed -->
+    <section class="feed-section">
+        <h2>Posts</h2>
+        <div class="posts-feed">
+            {USER_POSTS_LIST}
+        </div>
+    </section>
+
+</div>
+
+<style>
+    .profile-cover {
+        height: 300px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px 12px 0 0;
+        margin-bottom: 0;
+    }
+    
+    .profile-header-overlay {
+        position: absolute;
+        bottom: -60px;
+        left: 2rem;
+        right: 2rem;
+        background: white;
+        border-radius: 12px;
+        padding: 2rem 2rem 3rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-end;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .profile-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        flex-shrink: 0;
+    }
+    
+    .profile-info h1 {
+        font-size: 2rem;
+        margin: 0 0 0.5rem 0;
+        color: #111;
+        font-weight: 700;
+    }
+    
+    .profile-bio {
+        font-size: 1.1rem;
+        color: #65676b;
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+        font-style: italic;
+    }
+    
+    .profile-email {
+        color: #65676b;
+        margin-bottom: 1rem;
+    }
+    
+    .photo-gallery {
+        max-width: 600px;
+        margin: 4rem auto 2rem;
+        padding: 0 1rem;
+    }
+    
+    .photo-gallery h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        color: #111;
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .gallery-item {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.02);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header-overlay {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            left: 1rem;
+            right: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+        }
+    }
+</style>

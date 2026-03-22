@@ -1,0 +1,85 @@
+<div style="padding-top: 2rem;">
+
+    <!-- Users Directory -->
+    <section class="users-directory">
+        <h2>Users Directory</h2>
+        <div class="users-grid">
+            {USERS_LIST}
+        </div>
+    </section>
+
+    {POST_FORM}
+
+    <!-- Posts Feed -->
+    <section class="feed-section">
+        <h2>Feed</h2>
+        <div id="posts-feed">
+            {POSTS_LIST}
+        </div>
+    </section>
+
+</div>
+
+<style>
+    .users-directory {
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        padding: 0 1rem;
+    }
+    
+    .users-directory h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        color: #111;
+    }
+    
+    .users-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .user-card {
+        background: white;
+        border: 1px solid #e1e8ed;
+        border-radius: 12px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .user-card:hover {
+        border-color: #0073b1;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+    }
+    
+    .user-card-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .user-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+        color: #111;
+    }
+    
+    .user-card-bio {
+        color: #65676b;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+    }
+    
+    .user-card-link {
+        color: #0073b1;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+</style>

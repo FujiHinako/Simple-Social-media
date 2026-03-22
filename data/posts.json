@@ -1,0 +1,37 @@
+[
+    {
+        "id": "demo1",
+        "user_id": "demo",
+        "user_name": "Sarah Johnson",
+        "content": "Just updated my profile! Excited to connect with professionals on ProfileApp \ud83c\udf89 #networking",
+        "created_at": "2024-01-15 10:30:00",
+        "likes": 3
+    },
+    {
+        "id": "demo2",
+        "user_id": "demo2",
+        "user_name": "Mike Chen",
+        "content": "Great meeting today at the conference. Looking forward to implementing new strategies! \ud83d\udcc8",
+        "created_at": "2024-01-14 16:45:00",
+        "likes": 8
+    },
+    {
+        "id": "69bf7cec4f852",
+        "user_id": "69bf76d36f050",
+        "user_name": "John David Quinacman Mancion",
+        "user_email": "johndavidmancion9@gmail.com",
+        "content": "Idk",
+        "created_at": "2026-03-22 06:23:56",
+        "likes": 0
+    },
+    {
+        "id": "69bf89d65e239",
+        "user_id": "69bf76d36f050",
+        "user_name": "John David Mancion",
+        "content": "Hello",
+        "created_at": "2026-03-22 07:19:02",
+        "likes": 26,
+        "comments": [],
+        "image": ""
+    }
+]
