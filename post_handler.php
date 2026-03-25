@@ -18,7 +18,8 @@ if (isset($_GET['like'])) {
     }
 
     file_put_contents($posts_file, json_encode($posts, JSON_PRETTY_PRINT));
-    header('Location: homepage.php');
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
     exit;
 }
 
@@ -27,17 +28,19 @@ if (isset($_POST['comment'], $_POST['post_id'])) {
     $posts = file_exists($posts_file) ? json_decode(file_get_contents($posts_file), true) : [];
     $posts = $posts ?: [];
 
-    foreach ($posts as &$p) {
+foreach ($posts as &$p) {
         if ($p['id'] === $_POST['post_id']) {
             $p['comments'][] = [
-                'user' => $_SESSION['user_name'],
-                'text' => htmlspecialchars($_POST['comment'])
+                'user' => $_SESSION['user_name'] ?? 'Anonymous',
+                'text' => htmlspecialchars(trim($_POST['comment']))
             ];
+            break;  // Optional: limit to first match
         }
     }
 
     file_put_contents($posts_file, json_encode($posts, JSON_PRETTY_PRINT));
-    header('Location: homepage.php');
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
     exit;
 }
 

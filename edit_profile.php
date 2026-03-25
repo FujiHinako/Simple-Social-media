@@ -29,6 +29,8 @@ if ($_POST) {
     $user['bio'] = $_POST['bio'];
     $user['email'] = $_POST['email'];
 
+    $user_full_name = trim($user['first_name'] . ' ' . ($user['middle_name'] ?? '') . ' ' . $user['last_name']);
+
     // Handle profile photo upload
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
         $upload_dir = __DIR__ . '/images/';
@@ -53,6 +55,40 @@ if ($_POST) {
                     'content' => 'Updated my profile photo 👤✨',
                     'image' => $user['profile_photo'],
                     'likes' => 0,
+                    'comments' => [],
+                    'created_at' => date('c')
+                ];
+                $posts[] = $new_post;
+                file_put_contents($posts_file, json_encode($posts, JSON_PRETTY_PRINT));
+            }
+        }
+    }
+
+    // Handle cover photo upload
+    if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = __DIR__ . '/images/';
+        if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+        
+        $file_ext = strtolower(pathinfo($_FILES['cover_photo']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (in_array($file_ext, $allowed) && $_FILES['cover_photo']['size'] < 5*1024*1024) { // 5MB
+            $filename = $user_id . '_cover_' . time() . '.' . $file_ext;
+            $filepath = $upload_dir . $filename;
+            
+            if (move_uploaded_file($_FILES['cover_photo']['tmp_name'], $filepath)) {
+                $user['cover_photo'] = 'images/' . $filename;
+
+                // Auto-post new cover photo
+                $posts_file = $data_dir . 'posts.json';
+                $posts = json_decode(file_get_contents($posts_file), true) ?: [];
+                $new_post = [
+                    'id' => uniqid(),
+                    'user_id' => $user['id'],
+                    'user_name' => $user_full_name,
+                    'content' => 'Updated my cover photo! 🌅✨',
+                    'image' => $user['cover_photo'],
+                    'likes' => 0,
+                    'comments' => [],
                     'created_at' => date('c')
                 ];
                 $posts[] = $new_post;
@@ -82,6 +118,23 @@ if ($_POST) {
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@7.0.0/dist/js/mdb.umd.min.js"></script>
+    <script>
+    function readURL(input, previewId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(previewId).src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    document.getElementById('profilePhoto').addEventListener('change', function() {
+        readURL(this, 'profilePreview');
+    });
+    document.getElementById('coverPhoto').addEventListener('change', function() {
+        readURL(this, 'coverPreview');
+    });
+    </script>
 </head>
 <body class="bg-light">
     <div class="container py-4">
@@ -126,6 +179,23 @@ if ($_POST) {
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Cover Photo Upload Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <label class="form-label fw-bold">Cover Photo</label>
+        <div class="position-relative mb-3">
+            <img src="<?php echo htmlspecialchars($user['cover_photo'] ?? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIyMDBweCIgdmlld0JveD0iMCAwIDE2MDAgOTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wLDloOTAwbDMwMCw2MDBsLTYwMCw0MDB6IiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtc2l6ZT0iMzIiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBDb3ZlciBQaG90byBBZGRlZDwvdGV4dD48L3N2Zz4='); ?>" id="coverPreview" class="img-fluid rounded shadow-4" style="height: 200px; object-fit: cover; width: 100%;">
+            <div class="upload-overlay position-absolute top-50 start-50 translate-middle">
+                <label for="coverPhoto" class="btn btn-primary btn-lg rounded-circle p-3 cursor-pointer shadow">
+                    <i class="fas fa-image fs-4"></i>
+                </label>
+                <input type="file" id="coverPhoto" name="cover_photo" class="d-none" accept="image/*">
+            </div>
+        </div>
+        <small class="text-muted">Click image icon to upload cover photo (JPG, PNG, max 5MB)</small>
     </div>
 </div>
 

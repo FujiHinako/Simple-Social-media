@@ -51,13 +51,13 @@ foreach ($posts as $post) {
 
             <div class="post-actions">
                 <button class="like-btn" onclick="likePost(\'' . $post['id'] . '\')">👍 Like (' . ($post['likes'] ?? 0) . ')</button>
-                <button class="comment-btn" onclick="toggleComments(\'' . $post['id'] . '\')">💬 Comment (' . count($post['comments'] ?? []) . ')</button>
+                <button class="comment-btn" onclick="toggleComments(\'' . $post['id'] . '\')" data-post-id="' . $post['id'] . '">💬 Comment (' . strlen($comments_html) . ')</button>
             </div>
             <div id="comments-' . $post['id'] . '" class="comments-section" style="display:none;">
                 <div class="comments-list p-3 border-top">' . $comments_html . '</div>
-                <form class="comment-form p-3 border-top" onsubmit="submitComment(event, \'' . $post['id'] . '\')">
+                <form class="comment-form p-3 border-top" onsubmit="submitComment(event)" data-post-id="' . $post['id'] . '">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="comment" placeholder="Write a comment..." maxlength="500" required>
+                        <input type="text" class="form-control" name="comment" data-username="' . htmlspecialchars($_SESSION['user_name'] ?? 'Anonymous') . '" placeholder="Write a comment..." maxlength="500" required>
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -103,35 +103,7 @@ if ($is_logged_in) {
     </a>';
 }
 
-/* Post Form - INLINE WORKING */
-$post_form = '';
-if ($is_logged_in) {
-    $post_form = '
-        <div class="post-composer mb-4">
-            <div class="card shadow-sm border-0" style="cursor:pointer;" onclick="document.querySelector(\'#postTextarea\').focus()">
-                <div class="card-body p-3">
-                    <div class="user-avatar-small">' . $user_avatar . '</div>
-                    <textarea id="postTextarea" placeholder="What\'s on your mind, ' . htmlspecialchars($user_name) . '? " class="form-control border-0" rows="1" style="resize:none; background:transparent;"></textarea>
-                </div>
-            </div>
-            <form method="POST" action="post_handler.php" enctype="multipart/form-data" class="mt-2 d-none" id="postForm">
-                <textarea name="content" maxlength="1000"></textarea>
-                <input type="file" name="image" accept="image/*">
-            </form>
-        </div>
-        <script>
-        const textarea = document.getElementById("postTextarea");
-        const formTextarea = document.querySelector("#postForm textarea");
-        textarea.addEventListener("input", function() {
-            formTextarea.value = this.value;
-            this.style.height = "auto";
-            this.style.height = this.scrollHeight + "px";
-        });
-        document.getElementById("postForm").addEventListener("submit", function() { location.reload(); });
-        </script>';
-}
-
-/* Head Script - MINIMAL */
+/* Head Script */
 $head_script = '<script>
 function logout() { fetch("logout.php", {method: "POST"}).then(() => location.reload()); }
 function likePost(postId) { fetch("post_handler.php?like=" + postId).then(() => location.reload()); }
@@ -145,7 +117,7 @@ document.addEventListener("click", (e) => {
 });
 </script>';
 
-/* Template */
+/* Page replacements */
 $replacements = [
     '{PAGE_TITLE}' => 'ProfileApp - Home',
     '{PAGE_HEAD}' => $head_script,

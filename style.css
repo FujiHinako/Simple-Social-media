@@ -1,4 +1,4 @@
-:root {
+.root{
   --primary-blue: #0073b1;
   --primary-blue-dark: #005f8d;
   --bg-light: #f0f2f5;
@@ -15,7 +15,7 @@
 
 /* GLOBAL */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif; line-height:1.5; color: var(--text-primary); background: var(--bg-light);}
+body { font-family: 'Inter', -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif; line-height:1.6; color: var(--text-primary); background: linear-gradient(to b, #f8f9fa 0%, #f0f2f5 100%);}
 a { text-decoration:none; color:inherit; }
 
 /* NAVBAR */
@@ -43,10 +43,58 @@ a { text-decoration:none; color:inherit; }
 .btn-logout { color:#e74c3c; border:1px solid #e74c3c; background:var(--bg-white);}
 .btn-logout:hover { background:#e74c3c; color:white; }
 
-.user-avatar, .user-avatar-small { border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-blue-dark)); color:white; display:flex; align-items:center; justify-content:center; font-weight:600; cursor:pointer; width:40px; height:40px; font-size:0.9rem; }
+.user-avatar, .user-avatar-small { 
+  border-radius:50%; 
+  background:linear-gradient(135deg,var(--primary-blue),var(--primary-blue-dark)); 
+  color:white; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  font-weight:600; 
+  cursor:pointer; 
+  width:40px; 
+  height:40px; 
+  font-size:0.9rem; 
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+.post-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+.navbar {
+  backdrop-filter: blur(20px);
+}
 
 /* MAIN CONTENT */
-.main-content { margin-top:60px; min-height: calc(100vh - 60px); padding: 1rem; }
+.main-content { 
+  margin-top:70px; 
+  min-height: calc(100vh - 70px); 
+  padding: 2rem 1rem; 
+  max-width: 1400px; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+.main-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 1200px) {
+  .main-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+.sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
 
 /* PROFILE HEADER */
 .profile-cover { height: clamp(200px, 40vw, 300px); position:relative; background-size:cover; background-position:center; border-radius: var(--border-radius) var(--border-radius) 0 0; }
