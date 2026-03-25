@@ -1,24 +1,164 @@
-<div style="padding-top: 2rem;">
 
-    <!-- Users Directory -->
-    <section class="users-directory">
-        <h2>Users Directory</h2>
-        <div class="users-grid">
-            {USERS_LIST}
+<div class="container-fluid">
+    <div class="row">
+        <!-- LEFT SIDEBAR - USER DIRECTORY -->
+        <div class="col-lg-3 col-md-4">
+            <div class="sidebar position-sticky pt-3" style="top: 2rem;">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-users me-2"></i>People You May Know
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="users-sidebar">
+                            {USERS_LIST}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
 
-    {POST_FORM}
-
-    <!-- Posts Feed -->
-    <section class="feed-section">
-        <h2>Feed</h2>
-        <div id="posts-feed">
-            {POSTS_LIST}
+        <!-- MAIN FEED -->
+        <div class="col-lg-6 col-md-8">
+            {POST_FORM}
+            <div class="feed-section">
+                <h5 class="mb-3 fw-bold">
+                    <i class="fas fa-rss me-2 text-primary"></i>Feed
+                </h5>
+                <div id="posts-feed">
+                    {POSTS_LIST}
+                </div>
+            </div>
         </div>
-    </section>
 
+        <!-- RIGHT SIDEBAR -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="sidebar position-sticky pt-3" style="top: 2rem;">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Connect with more people</h6>
+                        <p class="text-muted small">Discover new connections and grow your network.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+/* FACEBOOK HOMEPAGE LAYOUT */
+.container-fluid {
+    max-width: 1400px;
+    padding: 2rem 1rem;
+}
+
+.sidebar {
+    height: fit-content;
+}
+
+.users-sidebar {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+
+.users-sidebar .user-card {
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+    margin: 0.25rem 0;
+    padding: 0.875rem 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.users-sidebar .user-card .user-card-avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.users-sidebar .user-card .user-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.users-sidebar .user-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.125rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.users-sidebar .user-card .user-card-bio {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.users-sidebar .user-card-link {
+    display: none;
+}
+
+
+.users-sidebar .user-card:last-child {
+    border-bottom: none;
+}
+
+.users-sidebar .user-card:hover {
+background: var(--bg-light);
+}
+
+.users-sidebar .user-card-avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.users-sidebar .user-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.users-sidebar .user-card-bio {
+    font-size: 0.85rem;
+}
+
+.feed-section {
+    max-width: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .sidebar {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .row > * {
+        margin-bottom: 2rem;
+    }
+    
+    .users-grid {
+        display: flex !important;
+        overflow-x: auto;
+        gap: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    .user-card {
+        min-width: 280px;
+        flex: 0 0 auto;
+    }
+}
+</style>
+
 
 <style>
     .users-directory {

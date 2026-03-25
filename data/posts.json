@@ -1,11 +1,32 @@
 [
     {
+        "id": "demo-sample",
+        "user_id": "1",
+        "user_name": "Sarah Johnson",
+        "content": "Check out this beautiful sunset from my latest hike! Perfect way to end the day. \ud83c\udf05 #nature #hiking #sunset",
+        "created_at": "2024-04-20 18:30:00",
+        "likes": 1,
+        "image": "images\/profiles\/profile1.jpg",
+        "liked_by": [
+            "69bf76d36f050"
+        ],
+        "comments": [
+            {
+                "user": "John David Mancion",
+                "text": "Hello"
+            }
+        ]
+    },
+    {
         "id": "demo1",
         "user_id": "demo",
         "user_name": "Sarah Johnson",
         "content": "Just updated my profile! Excited to connect with professionals on ProfileApp \ud83c\udf89 #networking",
         "created_at": "2024-01-15 10:30:00",
-        "likes": 3
+        "likes": 1,
+        "liked_by": [
+            "69bf76d36f050"
+        ]
     },
     {
         "id": "demo2",
@@ -30,8 +51,42 @@
         "user_name": "John David Mancion",
         "content": "Hello",
         "created_at": "2026-03-22 07:19:02",
-        "likes": 26,
+        "likes": 1,
         "comments": [],
-        "image": ""
+        "image": "",
+        "liked_by": [
+            "69bf76d36f050"
+        ]
+    },
+    {
+        "id": "69c3267641bff",
+        "user_id": "69bf76d36f050",
+        "user_name": "John David Mancion",
+        "content": "hm",
+        "created_at": "2026-03-25 01:04:06",
+        "likes": 1,
+        "comments": [
+            {
+                "user": "John David Mancion",
+                "text": "Hello"
+            }
+        ],
+        "image": "uploads\/1774397046_626667964_1962537301809736_3497863144389665012_n.jpg",
+        "liked_by": [
+            "69bf76d36f050"
+        ]
+    },
+    {
+        "id": "69c351d42fe04",
+        "user_id": "69bf76d36f050",
+        "user_name": "John David Mancion",
+        "content": "hello",
+        "created_at": "2026-03-25 04:09:08",
+        "likes": 1,
+        "comments": [],
+        "image": "",
+        "liked_by": [
+            "69bf76d36f050"
+        ]
     }
 ]

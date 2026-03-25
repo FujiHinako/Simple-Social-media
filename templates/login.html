@@ -1,133 +1,125 @@
-<div class="auth-container">
-    <div class="auth-tabs">
-        <button class="tab-btn active" onclick="showTab('login')">Login</button>
-        <button class="tab-btn" onclick="showTab('signup')">Sign Up</button>
-    </div>
-    
-    {ERROR_MSG}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up - ProfileApp</title>
+  <!-- Bootstrap + MDB (already in layout) -->
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+      <div class="col-lg-5 col-md-7 col-11">
+        <!-- Card -->
+        <div class="card shadow-3-strong rounded-5 mb-4">
+          <!-- Tab navs -->
+          <ul class="nav nav-pills nav-pills-candy rounded-top-pill px-3" id="pills-tabLogin" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active px-4 py-2 rounded-5 flex-fill" id="pills-login-tab" data-mdb-toggle="pill" data-mdb-target="#pills-login" role="tab"
+                aria-controls="pills-login" aria-selected="true">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link px-4 py-2 rounded-5 flex-fill" id="pills-signup-tab" data-mdb-toggle="pill" data-mdb-target="#pills-signup" role="tab"
+                aria-controls="pills-signup" aria-selected="false">
+                <i class="fas fa-user-plus me-2"></i>Sign Up
+              </button>
+            </li>
+          </ul>
 
-    <!-- Login Form -->
-    <form id="login-form" method="POST" action="login_handler.php" class="auth-form active">
-        <input type="hidden" name="action" value="login">
-        <label>Email</label>
-        <input type="email" name="email" required>
-        
-        <label>Password</label>
-        <input type="password" name="password" required>
-        
-        <button type="submit" class="btn-signup-main">Sign In</button>
-    </form>
+          <!-- Error -->
+          {ERROR_MSG}
 
-    <!-- Signup Form -->
-    <form id="signup-form" method="POST" action="login_handler.php" class="auth-form">
-        <input type="hidden" name="action" value="signup">
-        
-        <label>First Name *</label>
-        <input type="text" name="first_name" required>
-        
-        <div class="middle-name-group">
-            <label><input type="checkbox" id="no-middle" onclick="toggleMiddle()"> I don't have middle name</label>
-            <input type="text" name="middle_name" id="middle_name">
+          <!-- Login tab -->
+          <form id="login-form" method="POST" action="login_handler.php" class="needs-validation card-body px-5 py-4">
+            <input type="hidden" name="action" value="login">
+            <div class="form-outline mb-4">
+              <input type="email" id="login-email" class="form-control form-control-lg" name="email" required />
+              <label class="form-label" for="login-email">Email</label>
+            </div>
+            <div class="form-outline mb-4">
+              <input type="password" id="login-password" class="form-control form-control-lg" name="password" required />
+              <label class="form-label" for="login-password">Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block w-100 mb-0">
+              Sign in
+            </button>
+          </form>
+
+          <!-- Signup tab -->
+          <form id="signup-form" method="POST" action="login_handler.php" class="needs-validation card-body px-5 py-4" style="display: none;">
+            <input type="hidden" name="action" value="signup">
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" id="signup-first" class="form-control form-control-lg" name="first_name" required />
+                  <label class="form-label" for="signup-first">First name</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" id="signup-last" class="form-control form-control-lg" name="last_name" required />
+                  <label class="form-label" for="signup-last">Last name</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-outline mb-4">
+              <input type="email" id="signup-email" class="form-control form-control-lg" name="email" required />
+              <label class="form-label" for="signup-email">Email</label>
+            </div>
+            <div class="form-outline mb-4">
+              <input type="password" id="signup-password" class="form-control form-control-lg" name="password" minlength="6" required />
+              <label class="form-label" for="signup-password">Password (min 6 chars)</label>
+            </div>
+            <div class="form-outline mb-4">
+              <input type="password" id="signup-confirm" class="form-control form-control-lg" name="confirm_password" required />
+              <label class="form-label" for="signup-confirm">Confirm Password</label>
+            </div>
+            <div id="pass-match" class="alert alert-danger" style="display: none;">Passwords don't match!</div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block w-100 mb-0" onclick="return validateSignup()">
+              Create account
+            </button>
+          </form>
         </div>
-        
-        <label>Last Name *</label>
-        <input type="text" name="last_name" required>
-        
-        <label>Email *</label>
-        <input type="email" name="email" required>
-        
-        <label>Password (min 6 chars) *</label>
-        <input type="password" name="password" id="password" minlength="6" required>
-        
-        <label>Confirm Password *</label>
-        <input type="password" name="confirm_password" id="confirm_password" required>
-        
-        <div id="pass-match" style="display: none;">Passwords do not match</div>
-        
-        <button type="submit" class="btn-signup-main" onclick="return validateSignup()">Create Account</button>
-    </form>
-</div>
+      </div>
+    </div>
+  </div>
 
-<script>
-    function showTab(tab) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-        event.target.classList.add('active');
-        document.getElementById(tab + '-form').classList.add('active');
-    }
+  <script>
+    // Tab switching
+    const loginTab = document.getElementById('pills-login-tab');
+    const signupTab = document.getElementById('pills-signup-tab');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
 
-    function toggleMiddle() {
-        const middle = document.getElementById('middle_name');
-        middle.style.display = document.getElementById('no-middle').checked ? 'none' : 'block';
-        if (document.getElementById('no-middle').checked) middle.value = '';
-    }
+    loginTab.addEventListener('click', () => {
+      loginTab.classList.add('active');
+      signupTab.classList.remove('active');
+      loginForm.style.display = 'block';
+      signupForm.style.display = 'none';
+    });
 
+    signupTab.addEventListener('click', () => {
+      signupTab.classList.add('active');
+      loginTab.classList.remove('active');
+      signupForm.style.display = 'block';
+      loginForm.style.display = 'none';
+    });
+
+    // Signup validation
     function validateSignup() {
-        const pass1 = document.getElementById('password').value;
-        const pass2 = document.getElementById('confirm_password').value;
-        const matchEl = document.getElementById('pass-match');
-        if (pass1 !== pass2) {
-            matchEl.style.display = 'block';
-            matchEl.className = 'error-msg';
-            return false;
-        }
-        matchEl.style.display = 'none';
-        return true;
+      const pass1 = document.getElementById('signup-password').value;
+      const pass2 = document.getElementById('signup-confirm').value;
+      const matchEl = document.getElementById('pass-match');
+      if (pass1 !== pass2) {
+        matchEl.style.display = 'block';
+        setTimeout(() => matchEl.style.display = 'none', 5000);
+        return false;
+      }
+      return true;
     }
-</script>
+  </script>
+</body>
+</html>
 
-<style>
-    .auth-container {
-        max-width: 500px;
-        margin: 80px auto 0;
-        padding: 0 1rem;
-    }
-    
-    .auth-tabs {
-        display: flex;
-        border-bottom: 2px solid #ddd;
-        margin-bottom: 2rem;
-    }
-    
-    .tab-btn {
-        flex: 1;
-        padding: 1rem;
-        background: none;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        color: #666;
-    }
-    
-    .tab-btn.active {
-        color: #0073b1;
-        border-bottom: 2px solid #0073b1;
-    }
-    
-    .auth-form {
-        display: none;
-    }
-    
-    .auth-form.active {
-        display: block;
-    }
-    
-    .middle-name-group label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .middle-name-group input[type="checkbox"] {
-        width: auto;
-    }
-    
-    .error-msg {
-        background: #fee;
-        color: #c33;
-        padding: 0.75rem;
-        border-radius: 6px;
-        margin-bottom: 1rem;
-    }
-</style>
