@@ -104,8 +104,8 @@ $auth_section = isset($_SESSION['user_id']) ? '
 $mobile_auth = isset($_SESSION['user_id']) ? '<button onclick="logout()" class="auth-btn btn-logout">Logout</button>' : '';
 
 // Profile Media
-$cover_photo = $user['cover_photo'] ?? 'data:image/svg+xml;base64,...';
-$profile_photo = $user['profile_photo'] ?? 'data:image/svg+xml;base64,...';
+$cover_photo = $user['cover_photo'] ?? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+$profile_photo = $user['profile_photo'] ?? 'linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark))';
 $gallery_html = '';
 foreach ($user['gallery'] ?? [] as $photo) {
     $gallery_html .= '<div class="gallery-item"><img src="' . htmlspecialchars($photo) . '" alt="Gallery Photo" loading="lazy"></div>';
@@ -126,8 +126,8 @@ foreach (array_slice($users, 0, 8) as $friend) {
 
 // MAIN CONTENT
 $main_content = '
-<div class="main-content">
-    <div class="profile-cover" style="background-image:url(' . $cover_photo . ')"></div>
+<div class="profile-page">
+    <div class="profile-cover" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(' . $cover_photo . ');"></div>
     <div class="profile-header-overlay">
         <img src="' . $profile_photo . '" alt="Profile Photo" class="profile-photo">
         <div class="profile-info">
@@ -144,9 +144,11 @@ $main_content = '
         <div class="profile-tab" data-tab="friends" onclick="showTab(\'friends\')">Friends</div>
     </div>
 
-    <div class="tab-content active" id="posts">' . $user_posts_list . '</div>
-    <div class="tab-content" id="photos"><div class="gallery-grid">' . $gallery_html . '</div></div>
-    <div class="tab-content" id="friends"><div class="users-grid">' . $friends_list . '</div></div>
+    <div class="tab-content-wrapper">
+        <div class="tab-content active" id="posts">' . $user_posts_list . '</div>
+        <div class="tab-content" id="photos"><div class="gallery-grid">' . $gallery_html . '</div></div>
+        <div class="tab-content" id="friends"><div class="users-grid">' . $friends_list . '</div></div>
+    </div>
 </div>
 ';
 

@@ -21,6 +21,8 @@ body {
   line-height:1.6; 
   color: var(--text-primary); 
   background: linear-gradient(to b, #f8f9fa 0%, #f0f2f5 100%);
+  min-width: 320px;
+  overflow-x: hidden;
 }
 a { text-decoration:none; color:inherit; }
 
@@ -52,7 +54,7 @@ a { text-decoration:none; color:inherit; }
 
 .navbar-search {
   flex: 1;
-  max-width: 480px;
+  max-width: min(90vw, 480px);
   margin: 0 16px;
 }
 
@@ -143,11 +145,26 @@ a { text-decoration:none; color:inherit; }
 .main-content {
   margin-top:56px;
   min-height: calc(100vh - 56px);
-  padding: 16px;
+  padding: clamp(1rem, 5vw, 2.5rem);
   background: var(--bg-light);
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.profile-page {
+  max-width: min(100%, 800px);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.tab-content-wrapper {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: var(--shadow-lg);
+  margin-top: 2rem;
+  width: 100%;
 }
 
 .main-container {
@@ -174,7 +191,8 @@ a { text-decoration:none; color:inherit; }
 @media (max-width: 1024px) {
   .main-container {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: clamp(1rem, 4vw, 2rem);
+    padding: clamp(1rem, 5vw, 2rem);
   }
   .sidebar-left, .feed-main, .sidebar-right {
     grid-column: 1;
@@ -596,10 +614,146 @@ a { text-decoration:none; color:inherit; }
 .tab-content { display:none; margin-top:1rem; }
 .tab-content.active { display:block; }
 
+/* PROFILE COVER & HEADER STYLES */
+.profile-cover {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.profile-header-overlay {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.profile-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--bg-white);
+  box-shadow: var(--shadow-lg);
+  position: absolute;
+  bottom: -70px;
+  left: 20px;
+  z-index: 2;
+}
+
+.profile-info {
+  background: var(--bg-white);
+  padding: 60px 20px 40px;
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-top: -70px;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.profile-bio {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.profile-email {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.btn-edit {
+  background: var(--primary-blue);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background: var(--primary-blue-dark);
+  transform: translateY(-1px);
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 0;
+  margin-top: 3rem;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-tab {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.profile-tab:hover {
+  background: var(--bg-light);
+}
+
+.profile-tab.active {
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.tab-content {
+  display: none;
+  margin-top: 2rem;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.gallery-grid, .users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 /* RESPONSIVE */
 @media(max-width:768px){
-  .profile-header-overlay { flex-direction:column; align-items:center; text-align:center; top:-40px; padding:1rem; }
-  .profile-photo { width:100px; height:100px; }
+  .profile-cover { height: 250px; }
+  .profile-photo { 
+    width: 110px; 
+    height: 110px; 
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -55px;
+  }
+  .profile-info { 
+    padding: 80px 20px 40px; 
+    margin-top: -55px;
+    text-align: center;
+  }
+  .profile-info h1 { font-size: 1.5rem; }
+  .profile-tabs { flex-direction: column; }
+  .profile-tab { border-bottom: none; border-right: 3px solid transparent; }
+  .profile-tab.active { border-right-color: var(--primary-blue); }
   .post-form-header { flex-direction:column; }
   .post-form textarea { margin-left:0; }
   .post-btn { margin-left:0; align-self:flex-end; }

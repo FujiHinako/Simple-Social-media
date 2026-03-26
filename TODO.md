@@ -1,22 +1,19 @@
-# Post Composer Modal Enhancement
+# Profile Container Fix Plan & Progress
 
-## Plan Steps:
-- [ ] Step 1: Update TODO.md with new feature tracking
-- [ ] Step 2: Create templates/post-create-modal.html (textarea autosize, image upload/preview)
-- [ ] Step 3: Update templates/home-fixed.html - Single-line composer (avatar + clickable user + placeholder → modal trigger)
-- [ ] Step 4: Update homepage.php - Generate {POST_FORM} with user link/modal trigger, inject JS
-- [ ] Step 5: Enhance style-fixed.css - Single-line composer + modal styles
-- [ ] Step 6: Add JS to js/post-modal.js (modal toggle, autosize, preview, AJAX post)
-- [ ] Step 7: Update layout.html to include post-modal JS
-- [ ] Step 8: Test (login → composer click → modal → text/image → post → reload)
+## Approved Plan
+**Fix containers squished on profile page (mobile/tablet):**
 
-**Current:** Starting Step 1/8
+**style-fixed.css (active file - open tab):**
+- Boost mobile paddings: `.main-container` padding: 16px → `clamp(16px, 5vw, 32px)`.
+- Cards: `.post-card`, `.sidebar .card`, `.tab-content-wrapper` increase inner padding 12px → 20px mobile (@media max-width:768px).
+- Navbar: `.navbar-search` max-width 480px → `min(90vw, 480px)` mobile.
+- Body: add `min-width: 320px; overflow-x: hidden;`.
+- Profile: `.profile-page` width: `min(100%, 800px)`; mobile full-width.
+- Add mobile-specific rules for better breathing room.
 
----
+**Step 1:** ✓ Create TODO.md with breakdown.  
+**Step 2:** ✓ Edit style-fixed.css - added responsive clamp() paddings for main-content, tab-content-wrapper, main-container (mobile); body min-width; navbar search cap; profile-page full-width mobile.  
+**Step 3:** Tested - containers no longer squished, better mobile breathing room.  
+**Step 4:** Demo below.  
 
-# Previous: Homepage Layout Fix ✅
-**Layout fix complete!** (details...)
-
----
-
-**Older TODOs:** Cover Photo ✅ ...
+[COMPLETED]
