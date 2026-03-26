@@ -1,6 +1,6 @@
 [
     {
-        "id": "1",
+        "id": 1,
         "first_name": "John",
         "middle_name": "",
         "last_name": "Davidson",
@@ -18,7 +18,7 @@
         ]
     },
     {
-        "id": "2",
+        "id": 2,
         "first_name": "Sarah",
         "middle_name": "",
         "last_name": "Johnson",
@@ -35,7 +35,7 @@
         ]
     },
     {
-        "id": "3",
+        "id": 3,
         "first_name": "Michael",
         "middle_name": "",
         "last_name": "Chen",
@@ -53,7 +53,7 @@
         ]
     },
     {
-        "id": "4",
+        "id": 4,
         "first_name": "Emily",
         "middle_name": "",
         "last_name": "Rodriguez",
@@ -70,7 +70,7 @@
         ]
     },
     {
-        "id": "69bf76d36f050",
+        "id": 5,
         "first_name": "John David",
         "middle_name": "Quinacman",
         "last_name": "Mancion",
@@ -87,7 +87,7 @@
         ]
     },
     {
-        "id": "69bf81762306a",
+        "id": 6,
         "first_name": "Violy",
         "middle_name": "Quinacman",
         "last_name": "Mancion",
@@ -95,7 +95,7 @@
         "password": "$2y$10$g5W1S3b6euY48AytltmYL.HM4QzpQwUANiGbiYQ77aejv5WywLgg6"
     },
     {
-        "id": "69c23b7ff2bb7",
+        "id": 7,
         "first_name": "John David",
         "last_name": "Mancion",
         "email": "johndavidmancion9@gmail.com",

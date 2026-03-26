@@ -78,23 +78,14 @@ a { text-decoration:none; color:inherit; }
   margin-left: auto; 
   margin-right: auto; 
 }
-.main-container {
-  display: grid;
-  grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);
-  gap: 2rem;
-  align-items: start;
-}
+.main-container {\n  display: grid;\n  grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);\n  gap: 2rem;\n  align-items: start;\n}\n\n.sidebar-left { grid-column: 1; }\n.feed-main { grid-column: 2; max-width: 600px; margin: 0 auto; }\n.sidebar-right { grid-column: 3; }\n\n@media (max-width: 1200px) {\n  .main-container {\n    grid-template-columns: 1fr;\n    gap: 1.5rem;\n  }\n  .sidebar-left, .feed-main, .sidebar-right {\n    grid-column: 1;\n  }\n  .feed-main { order: -1; }\n}
 @media (max-width: 1200px) {
   .main-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 }
-.sidebar {
-  position: sticky;
-  top: 100px;
-  height: fit-content;
-}
+.sidebar {\n  position: sticky;\n  top: 90px;\n  height: fit-content;\n}\n\n.users-sidebar {\n  max-height: 500px;\n  overflow-y: auto;\n}\n.users-sidebar .user-card {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  padding: 0.875rem 1rem;\n  border-radius: 8px;\n  margin: 0.125rem 0;\n  border: none;\n  box-shadow: none;\n  text-align: left;\n}\n.users-sidebar .user-card:hover {\n  background: rgba(0,115,177,0.08);\n}
 
 /* PROFILE HEADER */
 .profile-cover { height: clamp(200px, 40vw, 300px); position:relative; background-size:cover; background-position:center; border-radius: var(--border-radius) var(--border-radius) 0 0; }

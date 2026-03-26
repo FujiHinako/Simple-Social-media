@@ -20,6 +20,7 @@ if (file_exists($users_file)) {
 
 /* Session */
 $is_logged_in = isset($_SESSION['user_id']);
+$user_id = $is_logged_in ? (int)$_SESSION['user_id'] : null;
 $user_name = $_SESSION['user_name'] ?? 'You';
 $user_avatar = strtoupper(substr($user_name, 0, 2));
 
@@ -48,6 +49,7 @@ foreach ($posts as $post) {
             </div>
 
             <div class="post-content">' . nl2br(htmlspecialchars($post['content'])) . '</div>
+            ' . (!empty($post['image']) ? '<div class="post-image"><img src="' . htmlspecialchars($post['image']) . '" alt="Post image" class="img-fluid rounded"></div>' : '') . '
 
             <div class="post-actions">
                 <button class="like-btn" onclick="likePost(\'' . $post['id'] . '\')">👍 Like (' . ($post['likes'] ?? 0) . ')</button>
@@ -72,15 +74,21 @@ if (empty($posts)) {
     $post_html = '<p>No posts yet. <a href="#post-form">Create the first post!</a></p>';
 }
 
-/* Users List */
+/* Users List - Contacts Style */
 $users_list = '';
 foreach ($users as $user) {
+    if ($user['id'] == $user_id) continue; // Skip current user
+    $profile_pic = !empty($user['profile_photo']) ? $user['profile_photo'] : '';
+    $avatar = $profile_pic ? '<img src="' . htmlspecialchars($profile_pic) . '" alt="Profile" class="contact-avatar-img">' : strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1));
+    
     $users_list .= '
-        <a href="profile.php?uid=' . $user['id'] . '" class="user-card">
-            <div class="user-card-avatar">' . strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)) . '</div>
-            <div>
-                <h3>' . htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) . '</h3>
-                <p>' . htmlspecialchars($user['bio'] ?? 'No bio') . '</p>
+        <a href="profile.php?uid=' . $user['id'] . '" class="contact-item">
+            <div class="contact-avatar">' . $avatar . '</div>
+            <div class="contact-info">
+                <div class="contact-name">' . htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) . '</div>
+            </div>
+            <div class="contact-status">
+                <div class="status-dot"></div>
             </div>
         </a>';
 }
@@ -88,12 +96,9 @@ foreach ($users as $user) {
 /* Auth */
 if ($is_logged_in) {
     $auth_section = '
-    <button onclick="logout()" class="auth-btn btn-logout">
-        Logout
-    </button>
     <div class="user-avatar" onclick="toggleProfileDropdown()">' . $user_avatar . '</div>
     <div id="profileDropdown" style="display:none; position:absolute; top:60px; right:1rem; background:white; box-shadow:0 8px 25px rgba(0,0,0,0.15); border-radius:12px;">
-        <a href="profile.php?uid=' . $_SESSION['user_id'] . '" style="display:block; padding:12px 20px; color:#333; text-decoration:none;">My Profile</a>
+        <a href="profile.php?uid=' . $_SESSION['user_id'] . '" style="display:block; padding:12px 20px; color:#333; text-decoration:none;">View Profile</a>
         <button onclick="logout()" style="border:none; background:none; width:100%; text-align:left; padding:12px 20px; color:#e74c3c;">Logout</button>
     </div>';
 } else {
@@ -106,29 +111,19 @@ if ($is_logged_in) {
 /* Post Form - INLINE WORKING */
 $post_form = '';
 if ($is_logged_in) {
+    $profile_link = 'profile.php?uid=' . $_SESSION['user_id'];
     $post_form = '
-        <div class="post-composer mb-4">
-            <div class="card shadow-sm border-0" style="cursor:pointer;" onclick="document.querySelector(\'#postTextarea\').focus()">
-                <div class="card-body p-3">
-                    <div class="user-avatar-small">' . $user_avatar . '</div>
-                    <textarea id="postTextarea" placeholder="What\'s on your mind, ' . htmlspecialchars($user_name) . '? " class="form-control border-0" rows="1" style="resize:none; background:transparent;"></textarea>
+        <div class="post-composer-single mb-4 card shadow-sm border-0 p-3" onclick="openPostModal()" style="cursor:pointer;">
+            <div class="d-flex align-items-center gap-3">
+                <div class="user-avatar-small">' . $user_avatar . '</div>
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <a href="' . $profile_link . '" class="fw-semibold text-decoration-none">' . htmlspecialchars($user_name) . '</a>
+                    </div>
+                    <div class="text-muted small">What\'s on your mind, ' . htmlspecialchars($user_name) . '?</div>
                 </div>
             </div>
-            <form method="POST" action="post_handler.php" enctype="multipart/form-data" class="mt-2 d-none" id="postForm">
-                <textarea name="content" maxlength="1000"></textarea>
-                <input type="file" name="image" accept="image/*">
-            </form>
-        </div>
-        <script>
-        const textarea = document.getElementById("postTextarea");
-        const formTextarea = document.querySelector("#postForm textarea");
-        textarea.addEventListener("input", function() {
-            formTextarea.value = this.value;
-            this.style.height = "auto";
-            this.style.height = this.scrollHeight + "px";
-        });
-        document.getElementById("postForm").addEventListener("submit", function() { location.reload(); });
-        </script>';
+        </div>';
 }
 
 /* Head Script - MINIMAL */
@@ -139,21 +134,34 @@ function toggleProfileDropdown() {
   const dropdown = document.getElementById("profileDropdown"); 
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; 
 }
+function toggleProfileNavDropdown(event) {
+  event.preventDefault();
+  const dropdown = document.getElementById("profile-nav-dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
 document.addEventListener("click", (e) => { 
   const dropdown = document.getElementById("profileDropdown"); 
-  if (dropdown.style.display === "block" && !e.target.closest(".user-avatar")) dropdown.style.display = "none"; 
+  if (dropdown.style.display === "block" && !e.target.closest(".user-avatar")) dropdown.style.display = "none";
+  
+  const navDropdown = document.getElementById("profile-nav-dropdown");
+  const navLink = document.querySelector(".nav-link[onclick*=\"toggleProfileNavDropdown\"]");
+  if (navDropdown && navDropdown.style.display === "block" && navLink && !navLink.contains(e.target) && !navDropdown.contains(e.target)) {
+    navDropdown.style.display = "none";
+  }
 });
 </script>';
 
 /* Template */
+$content = str_replace(
+    ['{USERS_LIST}', '{POST_FORM}', '{POSTS_LIST}', '{POST_MODAL}'],
+    [$users_list, $post_form, $post_html, file_get_contents(__DIR__ . '/templates/post-create-modal.html')],
+    file_get_contents(__DIR__ . '/templates/home-fixed.html')
+);
+
 $replacements = [
-    '{PAGE_TITLE}' => 'ProfileApp - Home',
+    '{PAGE_TITLE}' => 'Home',
     '{PAGE_HEAD}' => $head_script,
-    '{MAIN_CONTENT}' => str_replace(
-        ['{USERS_LIST}', '{POST_FORM}', '{POSTS_LIST}'],
-        [$users_list, $post_form, $post_html],
-        file_get_contents(__DIR__ . '/templates/home.html')
-    ),
+    '{MAIN_CONTENT}' => $content,
     '{PROFILE_LINK}' => $is_logged_in ? '?uid=' . $_SESSION['user_id'] : '',
     '{AUTH_SECTION}' => $auth_section,
     '{PAGE_SCRIPT}' => ''

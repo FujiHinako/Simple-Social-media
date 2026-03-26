@@ -2,6 +2,9 @@
 session_start();
 
 $user_id = $_GET['uid'] ?? $_GET['user'] ?? null;
+if ($user_id !== null) {
+    $user_id = (int)$user_id; // Ensure user_id is integer for proper comparison
+}
 if (!isset($_SESSION['user_id']) && !$user_id) {
     header('Location: login.php?from=profile');
     exit;
@@ -189,6 +192,13 @@ $page_title = $user_full_name;
 
 // LAYOUT
 $layout = file_get_contents(__DIR__ . '/templates/layout.html');
+$profile_content = str_replace(
+  ['{COVER_PHOTO}', '{PROFILE_PHOTO}', '{USER_FULL_NAME}', '{USER_BIO}', '{USER_EMAIL}', '{EDIT_BUTTON}', '{USER_POSTS_LIST}', '{GALLERY_HTML}', '{FRIENDS_LIST}'],
+  [$cover_photo, $profile_photo, $user_full_name, $user_bio, $user_email, $edit_button, $user_posts_list, $gallery_html, $friends_list],
+  file_get_contents(__DIR__ . '/templates/profile-fixed.html')
+);
+
+$main_content = $profile_content;
 $replacements = [
     '{PAGE_TITLE}' => $page_title,
     '{PAGE_HEAD}' => '',
