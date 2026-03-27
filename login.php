@@ -16,6 +16,10 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@7.0.0/dist/js/mdb.umd.min.js"></script>
 </head>
 <body class="bg-light">
+    <?php
+      $error = $_GET['error'] ?? '';
+      $email = htmlspecialchars($_GET['email'] ?? '', ENT_QUOTES, 'UTF-8');
+    ?>
     <!-- Main container -->
     <div class="container py-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -34,13 +38,16 @@ session_start();
                         <!-- Login tab content -->
                         <form id="loginForm" method="POST" action="login_handler.php" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="login">
+                            <?php if($error === 'invalid'): ?>
+                              <div class="alert alert-danger">Invalid email or password.</div>
+                            <?php endif; ?>
                             <div class="form-outline mb-4">
-                                <input type="email" id="loginEmail" class="form-control form-control-lg" name="email" required />
+                                <input type="email" id="loginEmail" class="form-control form-control-lg <?php echo ($error === 'invalid' ? 'is-invalid' : ''); ?>" name="email" required value="<?php echo $email; ?>" />
                                 <label class="form-label" for="loginEmail">Email address</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="password" id="loginPassword" class="form-control form-control-lg" name="password" required />
+                                <input type="password" id="loginPassword" class="form-control form-control-lg <?php echo ($error === 'invalid' ? 'is-invalid' : ''); ?>" name="password" required />
                                 <label class="form-label" for="loginPassword">Password</label>
                             </div>
 

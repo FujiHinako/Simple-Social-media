@@ -98,14 +98,43 @@ $user_name = $_SESSION['user_name'] ?? 'Guest';
 $user_session_avatar = strtoupper(substr($user_name, 0, 1));
 
 $auth_section = isset($_SESSION['user_id']) ? '
-<div class="user-avatar" id="user-avatar" title="' . htmlspecialchars($user_name) . '" onclick="toggleProfileDropdown()">' . $user_session_avatar . '</div>' : '
+<div class="user-avatar" id="user-avatar" title="' . htmlspecialchars($user_name) . '" onclick="toggleProfileDropdown()">' . $user_session_avatar . '</div>
+<div id="profileDropdown" style="display:none; position:absolute; top:60px; right:1rem; background:white; box-shadow:0 8px 25px rgba(0,0,0,0.15); border-radius:12px; z-index: 1000;">
+    <a href="profile.php?uid=' . $_SESSION['user_id'] . '&tab=posts" style="display:block; padding:12px 20px; color:#333; text-decoration:none;">View Profile</a>
+    <button onclick="logout()" style="border:none; background:none; width:100%; text-align:left; padding:12px 20px; color:#e74c3c; cursor:pointer;">Logout</button>
+</div>' : '
 <a href="login.php" class="auth-btn btn-login btn-account"><i class="fas fa-user-circle"></i> Sign In / Up</a>';
 
 $mobile_auth = isset($_SESSION['user_id']) ? '<button onclick="logout()" class="auth-btn btn-logout">Logout</button>' : '';
 
 // Profile Media
-$cover_photo = $user['cover_photo'] ?? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-$profile_photo = $user['profile_photo'] ?? 'linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark))';
+$default_cover = 'https://via.placeholder.com/1200x400?text=Cover+Photo';
+$default_profile = 'https://via.placeholder.com/200?text=Profile+Photo';
+
+function resolveImagePath($path, $fallback) {
+    if (empty($path)) {
+        return $fallback;
+    }
+
+    $path = str_replace('\\', '/', trim($path));
+
+    // Full URL path
+    if (filter_var($path, FILTER_VALIDATE_URL)) {
+        return $path;
+    }
+
+    // Local path in project; verify file exists on disk
+    $localFile = __DIR__ . '/' . ltrim($path, '/');
+    if (file_exists($localFile)) {
+        return $path;
+    }
+
+    // fallback to placeholder
+    return $fallback;
+}
+
+$cover_photo = resolveImagePath($user['cover_photo'] ?? '', $default_cover);
+$profile_photo = resolveImagePath($user['profile_photo'] ?? '', $default_profile);
 $gallery_html = '';
 foreach ($user['gallery'] ?? [] as $photo) {
     $gallery_html .= '<div class="gallery-item"><img src="' . htmlspecialchars($photo) . '" alt="Gallery Photo" loading="lazy"></div>';
@@ -149,18 +178,32 @@ $main_content = '
         <div class="tab-content" id="photos"><div class="gallery-grid">' . $gallery_html . '</div></div>
         <div class="tab-content" id="friends"><div class="users-grid">' . $friends_list . '</div></div>
     </div>
-</div>
-';
+</div>';
 
 // SCRIPT
-$page_script = '
+$page_script = <<<'EOD'
 <script>
 function logout() {
   fetch("logout.php", {method:"POST"}).then(()=>location.reload());
 }
 
 function likePost(postId) {
-  fetch("post_handler.php?like="+postId).then(()=>location.reload());
+  fetch("post_handler.php?like=" + postId)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        var allBtns = document.querySelectorAll('.like-btn');
+        for(var i = 0; i < allBtns.length; i++) {
+          var btn = allBtns[i];
+          if (String(btn.onclick).indexOf(postId) > -1) {
+            var match = btn.textContent.match((\\d+)/);
+            var currentLikes = match ? parseInt(match[1]) : 0;
+            btn.textContent = btn.textContent.replace(/👍\\s*\\d*/, "👍 " + (currentLikes + 1));
+          }
+        }
+      }
+    })
+    .catch(function(error) { console.error(error); });
 }
 
 function showComments(postId) {
@@ -169,7 +212,7 @@ function showComments(postId) {
 }
 
 function toggleProfileDropdown() {
-  const dropdown=document.getElementById("profileDropdown");
+  const dropdown = document.getElementById("profileDropdown");
   if(dropdown) dropdown.style.display = dropdown.style.display==="block"?"none":"block";
 }
 
@@ -183,11 +226,44 @@ document.addEventListener("click",function(e){
 function showTab(tabId){
   document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".profile-tab").forEach(t=>t.classList.remove("active"));
-  document.getElementById(tabId).classList.add("active");
-  document.querySelector(".profile-tab[data-tab=\'"+tabId+"\']").classList.add("active");
+  const content = document.getElementById(tabId + '-tab');
+  const tab = document.querySelector(".profile-tab[data-tab='" + tabId + "']");
+  if(content) content.classList.add("active");
+  if(tab) tab.classList.add("active");
+}
+
+function bindProfileTabEvents(){
+  const tabs = document.querySelectorAll('.profile-tab');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('data-tab');
+      if(id) showTab(id);
+    });
+  });
+}
+
+function getInitialTab() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const requested = urlParams.get('tab');
+  const validTabs = ['posts', 'photos', 'friends'];
+  if (requested && validTabs.includes(requested)) {
+    return requested;
+  }
+  return 'posts';
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', function(){
+    bindProfileTabEvents();
+    showTab(getInitialTab());
+  });
+}else{
+  bindProfileTabEvents();
+  showTab(getInitialTab());
 }
 </script>
-';
+EOD;
 
 // PAGE TITLE
 $page_title = $user_full_name;
@@ -201,13 +277,14 @@ $profile_content = str_replace(
 );
 
 $main_content = $profile_content;
+$profileLink = isset($_SESSION['user_id']) ? '?uid=' . $_SESSION['user_id'] . '&tab=posts' : '?tab=posts';
 $replacements = [
     '{PAGE_TITLE}' => $page_title,
     '{PAGE_HEAD}' => '',
     '{MAIN_CONTENT}' => $main_content,
     '{AUTH_SECTION}' => $auth_section,
     '{MOBILE_AUTH}' => $mobile_auth,
-    '{PROFILE_LINK}' => isset($_SESSION['user_id']) ? '?uid=' . $_SESSION['user_id'] : '',
+    '{PROFILE_LINK}' => $profileLink,
     '{PAGE_SCRIPT}' => $page_script
 ];
 

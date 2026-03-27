@@ -162,7 +162,7 @@ $replacements = [
     '{PAGE_TITLE}' => 'Home',
     '{PAGE_HEAD}' => $head_script,
     '{MAIN_CONTENT}' => $content,
-    '{PROFILE_LINK}' => $is_logged_in ? '?uid=' . $_SESSION['user_id'] : '',
+    '{PROFILE_LINK}' => $is_logged_in ? '?uid=' . $_SESSION['user_id'] . '&tab=posts' : '?tab=posts',
     '{AUTH_SECTION}' => $auth_section,
     '{PAGE_SCRIPT}' => ''
 ];

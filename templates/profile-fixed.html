@@ -1,38 +1,33 @@
 <div class="profile-container">
-  <div class="profile-cover" style="background-image: url('{COVER_PHOTO}')"></div>
-  <div class="profile-header-overlay">
-    <img src="{PROFILE_PHOTO}" alt="Profile" class="profile-photo">
+  <div class="profile-cover" style="background-image: url('{COVER_PHOTO}');"></div>
+
+  <section class="profile-header">
+    <div class="profile-photo-wrap">
+      <img src="{PROFILE_PHOTO}" alt="Profile" class="profile-photo" onerror="this.src='https://via.placeholder.com/200?text=Profile';">
+    </div>
     <div class="profile-info">
       <h1>{USER_FULL_NAME}</h1>
       <p class="profile-bio">{USER_BIO}</p>
       <p class="profile-email">{USER_EMAIL}</p>
       {EDIT_BUTTON}
     </div>
-  </div>
+  </section>
 
-  <div class="profile-tabs">
-    <div class="profile-tab active" onclick="showTab('posts')">Posts</div>
-    <div class="profile-tab" onclick="showTab('photos')">Photos</div>
-    <div class="profile-tab" onclick="showTab('friends')">Friends</div>
-  </div>
+  <nav class="profile-tabs" role="tablist" aria-label="Profile tabs">
+    <button class="profile-tab active" data-tab="posts" type="button">Posts</button>
+    <button class="profile-tab" data-tab="photos" type="button">Photos</button>
+    <button class="profile-tab" data-tab="friends" type="button">Friends</button>
+  </nav>
 
-  <div class="tab-content active" id="posts-tab">
-    <div class="posts-section">
-      {USER_POSTS_LIST}
-    </div>
-  </div>
-  
-  <div class="tab-content" id="photos-tab">
-    <div class="photo-gallery">
-      <div class="gallery-grid">
-        {GALLERY_HTML}
-      </div>
-    </div>
-  </div>
-  
-  <div class="tab-content" id="friends-tab">
-    <div class="users-grid">
-      {FRIENDS_LIST}
-    </div>
-  </div>
+  <section class="tab-content active" id="posts-tab">
+    <div class="posts-section">{USER_POSTS_LIST}</div>
+  </section>
+
+  <section class="tab-content" id="photos-tab">
+    <div class="photo-gallery"><div class="gallery-grid">{GALLERY_HTML}</div></div>
+  </section>
+
+  <section class="tab-content" id="friends-tab">
+    <div class="users-grid">{FRIENDS_LIST}</div>
+  </section>
 </div>

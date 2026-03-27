@@ -21,7 +21,9 @@ if ($_POST['action'] === 'login') {
         }
     }
 
-    echo "Invalid login";
+    $email = urlencode($_POST['email']);
+    header('Location: login.php?error=invalid&email=' . $email);
+    exit;
 
 } elseif ($_POST['action'] === 'signup') {
 

@@ -97,8 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         file_put_contents($posts_file, json_encode($posts, JSON_PRETTY_PRINT));
     }
-
-    header('Location: homepage.php');
+    
+    $new_post = end($posts);
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'post' => $new_post]);
     exit;
 }
 ?>
