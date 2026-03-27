@@ -96,7 +96,7 @@ foreach ($users as $user) {
 /* Auth */
 if ($is_logged_in) {
     $auth_section = '
-    <div class="user-avatar" onclick="toggleProfileDropdown()">' . '<img src="{PROFILE_PHOTO}" alt="Profile" class="profile-photo" onerror="this.src=\'https://via.placeholder.com/200?text=Profile\';">' . '</div>
+    <div class="user-avatar" onclick="toggleProfileDropdown()">' . $avatar . '</div>
     <div id="profileDropdown" style="display:none; position:absolute; top:60px; right:1rem; background:white; box-shadow:0 8px 25px rgba(0,0,0,0.15); border-radius:12px;">
         <a href="profile.php?uid=' . $_SESSION['user_id'] . '" style="display:block; padding:12px 20px; color:#333; text-decoration:none;">View Profile</a>
         <button onclick="logout()" style="border:none; background:none; width:100%; text-align:left; padding:12px 20px; color:#e74c3c;">Logout</button>
@@ -115,7 +115,7 @@ if ($is_logged_in) {
     $post_form = '
         <div class="post-composer-single mb-4 card shadow-sm border-0 p-3" onclick="openPostModal()" style="cursor:pointer;">
             <div class="d-flex align-items-center gap-3">
-                <div class="user-avatar-small">' . $user_avatar . '</div>
+                <div class="user-avatar-small">' . $avatar . '</div>
                 <div class="flex-grow-1">
                     <div class="d-flex align-items-center gap-2 mb-1">
                         <a href="' . $profile_link . '" class="fw-semibold text-decoration-none">' . htmlspecialchars($user_name) . '</a>
