@@ -52,8 +52,8 @@ foreach ($posts as $post) {
             ' . (!empty($post['image']) ? '<div class="post-image"><img src="' . htmlspecialchars($post['image']) . '" alt="Post image" class="img-fluid rounded"></div>' : '') . '
 
             <div class="post-actions">
-                <button class="like-btn" onclick="likePost(\'' . $post['id'] . '\')">👍 Like (' . ($post['likes'] ?? 0) . ')</button>
-                <button class="comment-btn" onclick="toggleComments(\'' . $post['id'] . '\')">💬 Comment (' . count($post['comments'] ?? []) . ')</button>
+                <button class="like-btn" data-post-id="' . $post['id'] . '" onclick="likePost(\'' . $post['id'] . '\')">👍 Like (' . ($post['likes'] ?? 0) . ')</button>
+                <button class="comment-btn" data-post-id="' . $post['id'] . '" onclick="toggleComments(\'' . $post['id'] . '\')">💬 Comment (' . count($post['comments'] ?? []) . ')</button>
             </div>
             <div id="comments-' . $post['id'] . '" class="comments-section" style="display:none;">
                 <div class="comments-list p-3 border-top">' . $comments_html . '</div>
@@ -129,7 +129,21 @@ if ($is_logged_in) {
 /* Head Script - MINIMAL */
 $head_script = '<script>
 function logout() { fetch("logout.php", {method: "POST"}).then(() => location.reload()); }
-function likePost(postId) { fetch("post_handler.php?like=" + postId).then(() => location.reload()); }
+function likePost(postId) {
+  fetch("post_handler.php?like=" + postId)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        const btn = document.querySelector(\'.like-btn[data-post-id="\' + postId + \'\"]\');
+        if (btn) {
+          const match = btn.textContent.match(/\\((\\d+)\\)/);
+          const currentLikes = match ? parseInt(match[1]) : 0;
+          btn.textContent = btn.textContent.replace(/\\(\\d+\\)/, "(" + (currentLikes + 1) + ")");
+        }
+      }
+    })
+    .catch(function(error) { console.error(error); });
+}
 function toggleProfileDropdown() { 
   const dropdown = document.getElementById("profileDropdown"); 
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; 

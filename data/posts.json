@@ -101,7 +101,7 @@
         "user_name": "John David Quinacman Mancion",
         "content": "Updated my cover photo! \ud83c\udf05\u2728",
         "image": "images\/69bf76d36f050_cover_1774431080.jpg",
-        "likes": 2,
+        "likes": 3,
         "comments": [
             {
                 "user": "John David Mancion",
@@ -135,7 +135,7 @@
         "user_name": "John David Mancion",
         "content": "hi",
         "created_at": "2026-03-27 09:32:29",
-        "likes": 0,
+        "likes": 6,
         "comments": [],
         "image": ""
     },
@@ -145,7 +145,7 @@
         "user_name": "John David Mancion",
         "content": "hi",
         "created_at": "2026-03-27 09:33:05",
-        "likes": 0,
+        "likes": 1,
         "comments": [],
         "image": ""
     },
@@ -155,7 +155,7 @@
         "user_name": "John David Mancion",
         "content": "hi",
         "created_at": "2026-03-27 09:33:11",
-        "likes": 0,
+        "likes": 1,
         "comments": [],
         "image": ""
     },
@@ -165,8 +165,17 @@
         "user_name": "John David Mancion",
         "content": "hi",
         "created_at": "2026-03-27 09:36:27",
-        "likes": 0,
-        "comments": [],
+        "likes": 7,
+        "comments": [
+            {
+                "user": "John David Mancion",
+                "text": "hi"
+            },
+            {
+                "user": "John David Mancion",
+                "text": "hi"
+            }
+        ],
         "image": ""
     }
 ]

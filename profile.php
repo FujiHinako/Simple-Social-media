@@ -65,6 +65,16 @@ if (empty($user_posts)) {
         $image_html = !empty($post['image']) ? '<img src="' . htmlspecialchars($post['image']) . '" alt="Post image" class="img-fluid rounded mt-3 post-image" style="max-height:400px; object-fit:cover;">' : '';
         $user_post_avatar = strtoupper(substr($post['user_name'], 0, 2));
 
+        // Build comments list HTML
+        $comments_html = '';
+        foreach (($post['comments'] ?? []) as $comment) {
+            $comments_html .= '
+        <div class="comment-item mb-2 p-2 bg-light rounded">
+            <small class="fw-bold text-primary">' . htmlspecialchars($comment['user']) . '</small>
+            <div>' . nl2br(htmlspecialchars($comment['text'])) . '</div>
+        </div>';
+        }
+
         $user_posts_list .= '
         <article class="post-card">
             <div class="post-header">
@@ -79,14 +89,19 @@ if (empty($user_posts)) {
             <div class="post-content">' . nl2br(htmlspecialchars($post['content'])) . '</div>
             ' . $image_html . '
             <div class="post-actions">
-                <button class="like-btn" onclick="likePost(\'' . $post['id'] . '\')">👍 ' . ($post['likes'] ?? 0) . '</button>
-                <button class="comment-btn" onclick="showComments(\'' . $post['id'] . '\')">💬 Comment</button>
+                <button class="like-btn" data-post-id="' . $post['id'] . '" onclick="likePost(\'' . $post['id'] . '\')">👍 Like (' . ($post['likes'] ?? 0) . ')</button>
+                <button class="comment-btn" data-post-id="' . $post['id'] . '" onclick="toggleComments(\'' . $post['id'] . '\')">💬 Comment (' . count($post['comments'] ?? []) . ')</button>
             </div>
-            <div id="comments-' . $post['id'] . '" style="display:none;" class="border-top pt-3">
-                <form method="POST" action="../post_handler.php" class="d-flex gap-2">
+            <div id="comments-' . $post['id'] . '" class="comments-section" style="display:none;">
+                <div class="comments-list p-3 border-top">' . $comments_html . '</div>
+                <form class="comment-form p-3 border-top" onsubmit="submitComment(event, \'' . $post['id'] . '\')">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="comment" placeholder="Write a comment..." maxlength="500" required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                     <input type="hidden" name="post_id" value="' . $post['id'] . '">
-                    <input type="text" name="comment" class="form-control form-control-sm" placeholder="Write a comment..." required maxlength="500">
-                    <button type="submit" class="btn btn-primary btn-sm">Post</button>
                 </form>
             </div>
         </article>';
@@ -192,23 +207,15 @@ function likePost(postId) {
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) {
-        var allBtns = document.querySelectorAll('.like-btn');
-        for(var i = 0; i < allBtns.length; i++) {
-          var btn = allBtns[i];
-          if (String(btn.onclick).indexOf(postId) > -1) {
-            var match = btn.textContent.match((\\d+)/);
-            var currentLikes = match ? parseInt(match[1]) : 0;
-            btn.textContent = btn.textContent.replace(/👍\\s*\\d*/, "👍 " + (currentLikes + 1));
-          }
+        const btn = document.querySelector('.like-btn[data-post-id="' + postId + '"]');
+        if (btn) {
+          const match = btn.textContent.match(/\((\d+)\)/);
+          const currentLikes = match ? parseInt(match[1]) : 0;
+          btn.textContent = btn.textContent.replace(/\(\d+\)/, "(" + (currentLikes + 1) + ")");
         }
       }
     })
     .catch(function(error) { console.error(error); });
-}
-
-function showComments(postId) {
-  const box=document.getElementById("comments-"+postId);
-  if(box) box.style.display = box.style.display==="none"?"block":"none";
 }
 
 function toggleProfileDropdown() {
