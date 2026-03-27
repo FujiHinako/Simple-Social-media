@@ -1,4 +1,4 @@
-.root{
+:root {
   --primary-blue: #0073b1;
   --primary-blue-dark: #005f8d;
   --bg-light: #f0f2f5;
@@ -28,8 +28,8 @@ a { text-decoration:none; color:inherit; }
 }
 
 .navbar-nav { display:flex; align-items:center; gap:1rem; }
-.hamburger { display:none; cursor:pointer; }
-@media (max-width:768px){ .hamburger { display:flex !important; } .navbar-nav { display:none !important; } }
+.navbar-toggler { display:none; cursor:pointer; }
+@media (max-width:768px){ .navbar-toggler { display:flex !important; } .navbar-nav { display:none !important; } }
 
 .navbar-brand { font-size:1.5rem; font-weight:700; color:var(--primary-blue); display:flex; align-items:center; gap:0.5rem; }
 .navbar-search { flex:1; max-width:400px; margin:0 2rem; }
@@ -78,14 +78,54 @@ a { text-decoration:none; color:inherit; }
   margin-left: auto; 
   margin-right: auto; 
 }
-.main-container {\n  display: grid;\n  grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);\n  gap: 2rem;\n  align-items: start;\n}\n\n.sidebar-left { grid-column: 1; }\n.feed-main { grid-column: 2; max-width: 600px; margin: 0 auto; }\n.sidebar-right { grid-column: 3; }\n\n@media (max-width: 1200px) {\n  .main-container {\n    grid-template-columns: 1fr;\n    gap: 1.5rem;\n  }\n  .sidebar-left, .feed-main, .sidebar-right {\n    grid-column: 1;\n  }\n  .feed-main { order: -1; }\n}
+.main-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);
+  gap: 2rem;
+  align-items: start;
+}
+
+.sidebar-left { grid-column: 1; }
+.feed-main { grid-column: 2; max-width: 600px; margin: 0 auto; }
+.sidebar-right { grid-column: 3; }
+
 @media (max-width: 1200px) {
   .main-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+  .sidebar-left, .feed-main, .sidebar-right {
+    grid-column: 1;
+  }
+  .feed-main { order: -1; }
 }
-.sidebar {\n  position: sticky;\n  top: 90px;\n  height: fit-content;\n}\n\n.users-sidebar {\n  max-height: 500px;\n  overflow-y: auto;\n}\n.users-sidebar .user-card {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  padding: 0.875rem 1rem;\n  border-radius: 8px;\n  margin: 0.125rem 0;\n  border: none;\n  box-shadow: none;\n  text-align: left;\n}\n.users-sidebar .user-card:hover {\n  background: rgba(0,115,177,0.08);\n}
+
+.sidebar {
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+}
+
+.users-sidebar {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.users-sidebar .user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  margin: 0.125rem 0;
+  border: none;
+  box-shadow: none;
+  text-align: left;
+}
+
+.users-sidebar .user-card:hover {
+  background: rgba(0, 115, 177, 0.08);
+}
 
 /* PROFILE HEADER */
 .profile-cover { height: clamp(200px, 40vw, 300px); position:relative; background-size:cover; background-position:center; border-radius: var(--border-radius) var(--border-radius) 0 0; }

@@ -150,10 +150,24 @@ function resolveImagePath($path, $fallback) {
 
 $cover_photo = resolveImagePath($user['cover_photo'] ?? '', $default_cover);
 $profile_photo = resolveImagePath($user['profile_photo'] ?? '', $default_profile);
+
+// Gallery HTML
 $gallery_html = '';
 foreach ($user['gallery'] ?? [] as $photo) {
     $gallery_html .= '<div class="gallery-item"><img src="' . htmlspecialchars($photo) . '" alt="Gallery Photo" loading="lazy"></div>';
 }
+
+// Image Posts HTML - Posts with images from the posts tab
+$image_posts_html = '';
+$image_posts = array_filter($user_posts, fn($p) => !empty($p['image']));
+if (!empty($image_posts)) {
+    foreach ($image_posts as $post) {
+        $image_posts_html .= '<div class="gallery-item"><img src="' . htmlspecialchars($post['image']) . '" alt="Post from ' . htmlspecialchars($post['user_name']) . '" loading="lazy" title="' . htmlspecialchars($post['content']) . '" class="post-image-thumb"></div>';
+    }
+}
+
+// Combined Photos HTML (gallery + image posts)
+$combined_photos_html = $gallery_html . $image_posts_html;
 
 // Friends
 $friends_list = '';
@@ -279,7 +293,7 @@ $page_title = $user_full_name;
 $layout = file_get_contents(__DIR__ . '/templates/layout.html');
 $profile_content = str_replace(
   ['{COVER_PHOTO}', '{PROFILE_PHOTO}', '{USER_FULL_NAME}', '{USER_BIO}', '{USER_EMAIL}', '{EDIT_BUTTON}', '{USER_POSTS_LIST}', '{GALLERY_HTML}', '{FRIENDS_LIST}'],
-  [$cover_photo, $profile_photo, $user_full_name, $user_bio, $user_email, $edit_button, $user_posts_list, $gallery_html, $friends_list],
+  [$cover_photo, $profile_photo, $user_full_name, $user_bio, $user_email, $edit_button, $user_posts_list, $combined_photos_html, $friends_list],
   file_get_contents(__DIR__ . '/templates/profile-fixed.html')
 );
 

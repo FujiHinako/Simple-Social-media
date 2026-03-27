@@ -6,7 +6,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - ProfileApp</title>
+    <title>Login / Sign Up - ConnectHub</title>
     <!-- Bootstrap + MDB -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/mdb-ui-kit@7.0.0/dist/css/mdb.min.css" rel="stylesheet">
@@ -25,10 +25,10 @@ session_start();
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-8 col-lg-6 col-xl-5">
                 <!-- Card -->
-                <div class="card shadow-5-strong style="border-radius: 15px;">
+                <div class="card shadow-5-strong" style="border-radius: 15px;">
                     <!-- Header -->
                     <div class="card-header p-4 bg-gradient text-blue rounded-top">
-                        <h3 class="mb-0"><i class="fas fa-user-circle me-2"></i>ProfileApp</h3>
+                        <h3 class="mb-0"><i class="fas fa-user-circle me-2"></i>ConnectHub</h3>
                     </div>
                     
                     <!-- Login form -->

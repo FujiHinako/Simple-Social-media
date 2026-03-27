@@ -166,13 +166,6 @@ a { text-decoration:none; color:inherit; }
   width: 100%;
   padding: 0;
 }
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 0;
-  padding: 0;
-}
 
 .main-content .main-container > .profile-container {
   grid-column: 1;
@@ -917,7 +910,6 @@ a { text-decoration:none; color:inherit; }
   .profile-tabs { display: flex; flex-direction: row; }
   .profile-tab { font-size: 0.85rem; padding: 0.67rem 0.5rem; }
   .gallery-grid, .users-grid { grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); }
-}
   .profile-info h1 { font-size: 1.5rem; }
   .profile-tabs { flex-direction: column; }
   .profile-tab { border-bottom: none; border-right: 3px solid transparent; }

@@ -96,7 +96,7 @@ foreach ($users as $user) {
 /* Auth */
 if ($is_logged_in) {
     $auth_section = '
-    <div class="user-avatar" onclick="toggleProfileDropdown()">' . $user_avatar . '</div>
+    <div class="user-avatar" onclick="toggleProfileDropdown()">' . '<img src="{PROFILE_PHOTO}" alt="Profile" class="profile-photo" onerror="this.src=\'https://via.placeholder.com/200?text=Profile\';">' . '</div>
     <div id="profileDropdown" style="display:none; position:absolute; top:60px; right:1rem; background:white; box-shadow:0 8px 25px rgba(0,0,0,0.15); border-radius:12px;">
         <a href="profile.php?uid=' . $_SESSION['user_id'] . '" style="display:block; padding:12px 20px; color:#333; text-decoration:none;">View Profile</a>
         <button onclick="logout()" style="border:none; background:none; width:100%; text-align:left; padding:12px 20px; color:#e74c3c;">Logout</button>
