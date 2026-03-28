@@ -187,5 +187,20 @@
         "likes": 0,
         "comments": [],
         "image": "uploads\/1774606264_brave_screenshot_github.com.png"
+    },
+    {
+        "id": "69c73e7b5aacf",
+        "user_id": 5,
+        "user_name": "John David Mancion",
+        "content": "grad pic",
+        "created_at": "2026-03-28 03:35:39",
+        "likes": 0,
+        "comments": [
+            {
+                "user": "John David Mancion",
+                "text": "Tite"
+            }
+        ],
+        "image": "uploads\/1774665339_GRAD.jpg"
     }
 ]

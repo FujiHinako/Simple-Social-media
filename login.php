@@ -51,16 +51,7 @@ session_start();
                                 <label class="form-label" for="loginPassword">Password</label>
                             </div>
 
-                            <div class="d-flex justify-content-around align-items-center mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="remember" />
-                                    <label class="form-check-label" for="remember">
-                                        Remember me
-                                    </label>
-                                </div>
-                                <a href="#!" class="text-body">Forgot password?</a>
-                            </div>
-
+                            
                             <button type="submit" class="btn btn-primary btn-lg btn-block w-100 gradient-custom mb-3">
                                 Sign in
                             </button>
